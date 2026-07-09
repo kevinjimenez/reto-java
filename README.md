@@ -6,8 +6,8 @@ Reto técnico compuesto por microservicios en Spring Boot para un dominio bancar
 
 | Servicio     | Descripción                                  | Puerto por defecto | Estado |
 |--------------|-----------------------------------------------|---------------------|--------|
-| `ms-cliente` | Gestión de clientes                           | `8081`              | En desarrollo |
-| `ms-cuenta`  | Gestión de cuentas                            | *(pendiente)*       | Esqueleto inicial (sin implementar) |
+| `ms-cliente` | Gestión de clientes                           | `8081`              | En desarrollo (health check) |
+| `ms-cuenta`  | Gestión de cuentas                            | `8082`              | En desarrollo (health check) |
 
 ## Stack
 
