@@ -1,4 +1,4 @@
-package com.banco.ms_cliente.persona.entities;
+package com.banco.ms_cliente.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

@@ -9,10 +9,10 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME:ms_cliente}
     password: ${SPRING_DATASOURCE_PASSWORD:ms_cliente}
     driver-class-name: org.postgresql.Driver
-  jap:
+  jpa:
     hibernate:
       ddl-auto: ${SPRING_JPA_DDL_AUTO:update}
     properties:
       hibernate:
-        format_dql: true
+        format_sql: true
     show-sql: false

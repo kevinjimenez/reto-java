@@ -1,6 +1,5 @@
-package com.banco.ms_cliente.cliente.entities;
+package com.banco.ms_cliente.entities;
 
-import com.banco.ms_cliente.persona.entities.Persona;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
