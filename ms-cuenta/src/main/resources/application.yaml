@@ -1,3 +1,18 @@
+server:
+  port: ${SERVER_PORT:8082}
+
 spring:
   application:
     name: ms-cuenta
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5434/ms_cuenta}
+    username: ${SPRING_DATASOURCE_USERNAME:ms_cuenta}
+    password: ${SPRING_DATASOURCE_PASSWORD:ms_cuenta}
+    driver-class-name: org.postgresql.Driver
+  jap:
+    hibernate:
+      ddl-auto: ${SPRING_JPA_DDL_AUTO:update}
+    properties:
+      hibernate:
+        format_dql: true
+    show-sql: false
