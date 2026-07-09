@@ -5,9 +5,9 @@ spring:
   application:
     name: ms-cliente
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/ms_client}
-    username: ${SPRING_DATASOURCE_USERNAME:ms_client}
-    password: ${SPRING_DATASOURCE_PASSWORD:ms_client}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/ms_cliente}
+    username: ${SPRING_DATASOURCE_USERNAME:ms_cliente}
+    password: ${SPRING_DATASOURCE_PASSWORD:ms_cliente}
     driver-class-name: org.postgresql.Driver
   jap:
     hibernate:

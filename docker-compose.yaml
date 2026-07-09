@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  cliente-db:
+    container_name: ms-cliente-db
+    image: postgres:16
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: ms_cliente
+      POSTGRES_USER: ms_cliente
+      POSTGRES_PASSWORD: ms_cliente
+    volumes:
+      - cliente_db_data:/var/lib/postgresql/data
+    networks:
+      - banco-network
+
+  cuenta-db:
+    container_name: ms-cuenta-db
+    image: postgres:16
+    restart: always
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: ms_cuenta
+      POSTGRES_USER: ms_cuenta
+      POSTGRES_PASSWORD: ms_cuenta
+    volumes:
+      - cuenta_db_data:/var/lib/postgresql/data
+    networks:
+      - banco-network
+
+volumes:
+  cliente_db_data:
+  cuenta_db_data:
+
+networks:
+  banco-network:
+    driver: bridge
