@@ -1,7 +1,7 @@
 package com.banco.ms_cliente.exceptions;
 
-public class ResourceNotFoundExceotion {
-    public ResourceNotFoundExceotion(String message) {
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String message) {
         super(message);
     }
 }
