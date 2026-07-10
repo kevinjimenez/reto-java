@@ -2,6 +2,7 @@ package com.banco.ms_cliente.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,7 @@ public class Persona {
     @Column(nullable = false, length = 20)
     private String genero;
 
-    @NotBlank(message = "La edad es obligatorio")
+    @NotNull(message = "La edad es obligatorio")
     @Column(nullable = false)
     private Integer edad;
 

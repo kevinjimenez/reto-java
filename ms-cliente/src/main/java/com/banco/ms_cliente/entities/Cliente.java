@@ -2,6 +2,7 @@ package com.banco.ms_cliente.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,7 +26,7 @@ public class Cliente extends Persona {
     @Column(nullable = false, length = 100)
     private String contrasena;
 
-    @NotBlank(message = "El clienteId es obligatorio")
+    @NotNull(message = "El estado es obligatorio")
     @Column(nullable = false)
     private Boolean estado;
 }

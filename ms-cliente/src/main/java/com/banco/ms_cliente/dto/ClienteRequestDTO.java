@@ -1,6 +1,7 @@
 package com.banco.ms_cliente.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,9 +20,9 @@ public class ClienteRequestDTO {
     @NotBlank(message = "")
     private String genero;
 
-    @NotBlank(message = "")
+    @NotNull(message = "")
     @Positive(message = "")
-    private String edad;
+    private Integer edad;
 
     @NotBlank(message = "")
     private String identificacion;
@@ -36,6 +37,6 @@ public class ClienteRequestDTO {
     @NotBlank(message = "")
     private String contrasena;
 
-    @NotBlank(message = "")
+    @NotNull(message = "")
     private Boolean estado;
 }
