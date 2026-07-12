@@ -4,6 +4,8 @@ import com.banco.ms_cuenta.dto.CuentaRequestDTO;
 import com.banco.ms_cuenta.dto.MovimientoRequestDTO;
 import com.banco.ms_cuenta.entities.ClienteReplica;
 import com.banco.ms_cuenta.repositories.ClienteReplicaRepository;
+import com.banco.ms_cuenta.repositories.CuentaRepository;
+import com.banco.ms_cuenta.repositories.MovimientoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,8 +48,16 @@ class CuentaMovimientoIntegrationTest {
     @Autowired
     private ClienteReplicaRepository clienteReplicaRepository;
 
+    @Autowired
+    private CuentaRepository cuentaRepository;
+
+    @Autowired
+    private MovimientoRepository movimientoRepository;
+
     @BeforeEach
     void setUp() {
+        movimientoRepository.deleteAll();
+        cuentaRepository.deleteAll();
         clienteReplicaRepository.deleteAll();
         clienteReplicaRepository.save(ClienteReplica.builder()
                 .clientePersonaId(1L)
