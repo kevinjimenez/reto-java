@@ -30,7 +30,7 @@ public class RabbitMQConfig {
 
     @Bean
     public Binding clienteEventsBinding(Queue clienteEventsQueue, TopicExchange clienteExchange) {
-        return BindingBuilder.bind(clienteExchange).to(clienteExchange).with(ROUTING_KEY_PATTERN);
+        return BindingBuilder.bind(clienteEventsQueue).to(clienteExchange).with(ROUTING_KEY_PATTERN);
     }
 
     @Bean
