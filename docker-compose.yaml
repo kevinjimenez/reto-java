@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   cliente-db:
     container_name: ms-cliente-db
@@ -13,6 +11,11 @@ services:
       POSTGRES_PASSWORD: ms_cliente
     volumes:
       - cliente_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ms_cliente -d ms_cliente"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     networks:
       - banco-network
 
@@ -52,6 +55,11 @@ services:
       POSTGRES_PASSWORD: ms_cuenta
     volumes:
       - cuenta_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ms_cuenta -d ms_cuenta"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     networks:
       - banco-network
 
@@ -85,6 +93,11 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     networks:
       - banco-network
 
