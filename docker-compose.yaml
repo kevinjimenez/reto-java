@@ -31,13 +31,60 @@ services:
     networks:
       - banco-network
 
-
   rabbitmq:
     image: rabbitmq:3.13-management-alpine
     container_name: rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - banco-network
+
+  ms-cuenta:
+    build:
+      context: ./ms-cuenta
+    container_name: ms-cuenta
+    ports:
+      - "8082:8082"
+    environment:
+      DB_HOST: postgres-cuenta
+      DB_PORT: 5432
+      DB_NAME: cuenta_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: guest
+      RABBITMQ_PASSWORD: guest
+    depends_on:
+      postgres-cuenta:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - banco-network
+
+  ms-cliente:
+    build:
+      context: ./ms-cliente
+    container_name: ms-cliente
+    ports:
+      - "8081:8081""
+    environment:
+      DB_HOST: postgres-cliente
+      DB_PORT: 5432
+      DB_NAME: cliente_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: guest
+      RABBITMQ_PASSWORD: guest
+    depends_on:
+      postgres-cliente:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     networks:
       - banco-network
 
