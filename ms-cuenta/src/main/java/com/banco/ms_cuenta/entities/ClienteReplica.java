@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class ClienteReplica {
 
     @Id
-    private String id;
+    private Long clientePersonaId;
 
     @Column(nullable = false, unique = true, length = 30)
     private String clienteId;
