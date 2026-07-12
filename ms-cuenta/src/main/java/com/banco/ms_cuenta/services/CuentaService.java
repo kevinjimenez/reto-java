@@ -54,7 +54,7 @@ public class CuentaService {
     public CuentaResponseDTO actualizar(Long id, CuentaRequestDTO body) {
         Cuenta cuenta = buscarCuentaOrThrow(id);
 
-        cuentaRepository.findByNumeroCuenta(body.getClienteId()).ifPresent(existing -> {
+        cuentaRepository.findByNumeroCuenta(body.getNumeroCuenta()).ifPresent(existing -> {
             if (!
                     existing.getId().equals(id)) {
                 throw new BusinessException("Ya existe una cuenta con numero: " + body.getNumeroCuenta());
