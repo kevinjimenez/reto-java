@@ -1,4 +1,4 @@
-package com.banco.ms_cliente.exceptions;
+package com.banco.ms_cuenta.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

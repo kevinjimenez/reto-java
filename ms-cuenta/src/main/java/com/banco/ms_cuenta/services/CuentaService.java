@@ -1,90 +1,95 @@
-package com.banco.ms_cliente.services;
+package com.banco.ms_cuenta.services;
 
-import com.banco.ms_cliente.dto.ClienteRequestDTO;
-import com.banco.ms_cliente.dto.ClienteResponseDTO;
-import com.banco.ms_cliente.entities.Cliente;
-import com.banco.ms_cliente.exceptions.BusinessException;
-import com.banco.ms_cliente.exceptions.ResourceNotFoundException;
-import com.banco.ms_cliente.repositories.ClienteRepository;
-import org.springframework.transaction.annotation.Transactional;
+import com.banco.ms_cuenta.dto.CuentaRequestDTO;
+import com.banco.ms_cuenta.dto.CuentaResponseDTO;
+import com.banco.ms_cuenta.entities.Cuenta;
+import com.banco.ms_cuenta.exceptions.BusinessException;
+import com.banco.ms_cuenta.exceptions.ResourceNotFoundException;
+import com.banco.ms_cuenta.repositories.ClienteReplicaRepository;
+import com.banco.ms_cuenta.repositories.CuentaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ClienteService {
-    private final ClienteRepository clienteRepository;
+public class CuentaService {
+    private final CuentaRepository cuentaRepository;
+    private final ClienteReplicaRepository clienteReplicaRepository;
 
     @Transactional(readOnly = true)
-    public ClienteResponseDTO obtenerPorId(Long id) {
-        Cliente cliente = buscarClienteOrThrow(id);
-        return toResponseDTO(cliente);
+    public CuentaResponseDTO obtenerPorId(Long id) {
+        return toResponseDTO(buscarCuentaOrThrow(id));
     }
 
     @Transactional(readOnly = true)
-    public List<ClienteResponseDTO> listarTodos() {
-        return clienteRepository.findAll().stream().map(this::toResponseDTO).toList();
+    public List<CuentaResponseDTO> listarTodos() {
+        return cuentaRepository.findAll().stream().map(this::toResponseDTO).toList();
     }
 
     @Transactional
-    public ClienteResponseDTO crear(ClienteRequestDTO request) {
-        if (clienteRepository.existsByClienteId(request.getClienteId())) {
-            throw new BusinessException("El cliente ya existe: [" + request.getClienteId() + "]");
+    public CuentaResponseDTO crear(CuentaRequestDTO request) {
+        if (cuentaRepository.existsByNumeroCuenta(request.getNumeroCuenta())) {
+            throw new BusinessException("La cuenta ya existe: [" + request.getNumeroCuenta() + "]");
         }
 
-        if (clienteRepository.existsByIdentificacion(request.getIdentificacion())) {
-            throw new BusinessException("La persona ya existe: [" + request.getIdentificacion() + "]");
-        }
+        clienteReplicaRepository.findByClienteId(request.getClienteId())
+                .orElseThrow(() -> new BusinessException("La clienteId '" + request.getClienteId() +"' no ecist o aun no ha sincronizado"));
 
-        Cliente cliente = Cliente.builder().nombre(request.getNombre()).genero(request.getGenero()).edad(request.getEdad()).identificacion(request.getIdentificacion()).direccion(request.getDireccion()).telefono(request.getTelefono()).clienteId(request.getClienteId()).contrasena(request.getContrasena()).estado(request.getEstado()).build();
+        Cuenta cuenta = Cuenta.builder()
+                .numeroCuenta(request.getNumeroCuenta())
+                .tipoCuenta(request.getTipoCuenta())
+                .saldoInicial(request.getSaldoInicial())
+                .saldoActual(request.getSaldoInicial())
+                .estado(request.getEstado())
+                .clienteId(request.getClienteId())
+                .build();
 
-        clienteRepository.save(cliente);
-
-        //TODO: event
-        return toResponseDTO(cliente);
+        return toResponseDTO(cuentaRepository.save(cuenta));
     }
 
     @Transactional
-    public ClienteResponseDTO actualizar(Long id, ClienteRequestDTO dto) {
-        Cliente cliente = buscarClienteOrThrow(id);
+    public CuentaResponseDTO actualizar(Long id, CuentaRequestDTO body) {
+        Cuenta cuenta = buscarCuentaOrThrow(id);
 
-        clienteRepository.findByClienteId(dto.getClienteId()).ifPresent(existing -> {
+        cuentaRepository.findByNumeroCuenta(body.getClienteId()).ifPresent(existing -> {
             if (!
                     existing.getId().equals(id)) {
-                throw new BusinessException("Ya existe un cliente con clienteId: " + dto.getClienteId());
+                throw new BusinessException("Ya existe una cuenta con numero: " + body.getNumeroCuenta());
             }
         });
 
-        cliente.setNombre(dto.getNombre());
-        cliente.setGenero(dto.getGenero());
-        cliente.setEdad(dto.getEdad());
-        cliente.setIdentificacion(dto.getIdentificacion());
-        cliente.setDireccion(dto.getDireccion());
-        cliente.setTelefono(dto.getTelefono());
-        cliente.setClienteId(dto.getClienteId());
-        cliente.setContrasena(dto.getContrasena());
-        cliente.setEstado(dto.getEstado());
-        Cliente actualizado = clienteRepository.save(cliente);
-        // TODO: event
-        return toResponseDTO(actualizado);
+        cuenta.setNumeroCuenta(body.getNumeroCuenta());
+        cuenta.setTipoCuenta(body.getTipoCuenta());
+        cuenta.setEstado(body.getEstado());
+        cuenta.setClienteId(body.getClienteId());
+
+        return toResponseDTO(cuentaRepository.save(cuenta));
     }
 
 
     @Transactional
     public void eliminar(Long id) {
-        Cliente cliente = buscarClienteOrThrow(id);
-        clienteRepository.delete(cliente);
-        //TODO: event
+        Cuenta cuenta = buscarCuentaOrThrow(id);
+        cuentaRepository.delete(cuenta);
     }
 
 
-    protected Cliente buscarClienteOrThrow(Long id) {
-        return clienteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado: [" + id + " ]"));
+    protected Cuenta buscarCuentaOrThrow(Long id) {
+        return cuentaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cuenta no encontrado: [" + id + " ]"));
     }
 
-    private ClienteResponseDTO toResponseDTO(Cliente cliente) {
-        return ClienteResponseDTO.builder().id(cliente.getId()).nombre(cliente.getNombre()).genero(cliente.getGenero()).edad(cliente.getEdad()).identificacion(cliente.getIdentificacion()).direccion(cliente.getDireccion()).telefono(cliente.getTelefono()).clienteId(cliente.getClienteId()).estado(cliente.getEstado()).build();
+    private CuentaResponseDTO toResponseDTO(Cuenta cuenta) {
+        return CuentaResponseDTO.builder()
+                .id(cuenta.getId())
+                .numeroCuenta(cuenta.getNumeroCuenta())
+                .tipoCuenta(cuenta.getTipoCuenta())
+                .saldoInicial(cuenta.getSaldoInicial())
+                .saldoActual(cuenta.getSaldoActual())
+                .estado(cuenta.getEstado())
+                .clienteId(cuenta.getClienteId())
+                .build();
     }
 }

@@ -1,22 +1,22 @@
-package com.banco.ms_cliente.dto;
+package com.banco.ms_cuenta.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClienteResponseDTO {
+public class CuentaResponseDTO {
     private Long id;
-    private String nombre;
-    private String genero;
-    private Integer edad;
-    private String identificacion;
-    private String direccion;
-    private String telefono;
-    private String clienteId;
+    private String numeroCuenta;
+    private String tipoCuenta;
+    private BigDecimal saldoInicial;
+    private BigDecimal saldoActual;
     private Boolean estado;
+    private String clienteId;
 }

@@ -1,42 +1,34 @@
-package com.banco.ms_cliente.dto;
+package com.banco.ms_cuenta.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClienteRequestDTO {
+public class CuentaRequestDTO {
 
     @NotBlank(message = "")
-    private String nombre;
+    private String numeroCuenta;
 
     @NotBlank(message = "")
-    private String genero;
+    private String tipoCuenta;
 
     @NotNull(message = "")
-    @Positive(message = "")
-    private Integer edad;
-
-    @NotBlank(message = "")
-    private String identificacion;
-
-    private String direccion;
-
-    private String telefono;
-
-    @NotBlank(message = "")
-    private String clienteId;
-
-    @NotBlank(message = "")
-    private String contrasena;
+    @PositiveOrZero(message = "")
+    private BigDecimal saldoInicial;
 
     @NotNull(message = "")
     private Boolean estado;
+
+    @NotBlank(message = "")
+    private String clienteId;
 }

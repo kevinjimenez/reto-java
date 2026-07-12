@@ -1,4 +1,4 @@
-package com.banco.ms_cliente.exceptions;
+package com.banco.ms_cuenta.exceptions;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -24,6 +24,11 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.NOT_FOUND, e.getMessage(), request, null);
     }
 
+    @ExceptionHandler(SaldoNoDisponibleException.class)
+    public ResponseEntity<ErrorResponse> handleSaldoNoDisponibleException(SaldoNoDisponibleException e, HttpServletRequest request) {
+        return build(HttpStatus.BAD_REQUEST, e.getMessage(), request, null);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
         List<String> detalles = e.getBindingResult().getFieldErrors().stream().map(fe -> fe.getField() + ": " + fe.getDefaultMessage()).collect(Collectors.toList());
@@ -33,6 +38,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e, HttpServletRequest request) {
         return build(HttpStatus.BAD_REQUEST, e.getMessage(), request, null);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGeneral(Exception e, HttpServletRequest request) {
+        return build(HttpStatus.INTERNAL_SERVER_ERROR, "Ocurrio un error inesperado: " + e.getMessage(), request, null);
     }
 
 
