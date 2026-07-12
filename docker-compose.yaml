@@ -26,11 +26,9 @@ services:
     ports:
       - "8081:8081"
     environment:
-      DB_HOST: cliente-db
-      DB_PORT: 5432
-      DB_NAME: ms_cliente
-      DB_USER: ms_cliente
-      DB_PASSWORD: ms_cliente
+      SPRING_DATASOURCE_URL: jdbc:postgresql://cliente-db:5432/ms_cliente
+      SPRING_DATASOURCE_USERNAME: ms_cliente
+      SPRING_DATASOURCE_PASSWORD: ms_cliente
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
       RABBITMQ_USER: guest
@@ -70,11 +68,9 @@ services:
     ports:
       - "8082:8082"
     environment:
-      DB_HOST: cuenta-db
-      DB_PORT: 5432
-      DB_NAME: ms_cuenta
-      DB_USER: ms_cuenta
-      DB_PASSWORD: ms_cuenta
+      SPRING_DATASOURCE_URL: jdbc:postgresql://cuenta-db:5432/ms_cuenta
+      SPRING_DATASOURCE_USERNAME: ms_cuenta
+      SPRING_DATASOURCE_PASSWORD: ms_cuenta
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
       RABBITMQ_USER: guest
