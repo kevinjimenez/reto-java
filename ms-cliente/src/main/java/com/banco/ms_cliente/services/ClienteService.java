@@ -5,6 +5,7 @@ import com.banco.ms_cliente.dto.ClienteResponseDTO;
 import com.banco.ms_cliente.entities.Cliente;
 import com.banco.ms_cliente.exceptions.BusinessException;
 import com.banco.ms_cliente.exceptions.ResourceNotFoundException;
+import com.banco.ms_cliente.messaging.ClienteEventPublisher;
 import com.banco.ms_cliente.repositories.ClienteRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClienteService {
     private final ClienteRepository clienteRepository;
+    private final ClienteEventPublisher clienteEventPublisher;
 
     @Transactional(readOnly = true)
     public ClienteResponseDTO obtenerPorId(Long id) {
@@ -40,9 +42,8 @@ public class ClienteService {
 
         Cliente cliente = Cliente.builder().nombre(request.getNombre()).genero(request.getGenero()).edad(request.getEdad()).identificacion(request.getIdentificacion()).direccion(request.getDireccion()).telefono(request.getTelefono()).clienteId(request.getClienteId()).contrasena(request.getContrasena()).estado(request.getEstado()).build();
 
-        clienteRepository.save(cliente);
-
-        //TODO: event
+        Cliente guardado = clienteRepository.save(cliente);
+        clienteEventPublisher.publicarCreado(guardado);
         return toResponseDTO(cliente);
     }
 
@@ -67,7 +68,7 @@ public class ClienteService {
         cliente.setContrasena(dto.getContrasena());
         cliente.setEstado(dto.getEstado());
         Cliente actualizado = clienteRepository.save(cliente);
-        // TODO: event
+        clienteEventPublisher.publicarCreado(actualizado);
         return toResponseDTO(actualizado);
     }
 
@@ -76,7 +77,7 @@ public class ClienteService {
     public void eliminar(Long id) {
         Cliente cliente = buscarClienteOrThrow(id);
         clienteRepository.delete(cliente);
-        //TODO: event
+        clienteEventPublisher.publicarEliminado(cliente);
     }
 
 
