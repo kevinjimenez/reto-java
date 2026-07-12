@@ -80,11 +80,11 @@ public class ClienteService {
     }
 
 
-    private ClienteResponseDTO toResponseDTO(Cliente cliente) {
-        return ClienteResponseDTO.builder().id(cliente.getId()).nombre(cliente.getNombre()).genero(cliente.getGenero()).edad(cliente.getEdad()).identificacion(cliente.getIdentificacion()).direccion(cliente.getDireccion()).telefono(cliente.getTelefono()).clienteId(cliente.getClienteId()).estado(cliente.getEstado()).build();
+    protected Cliente buscarClienteOrThrow(Long id) {
+        return clienteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado: [" + id + " ]"));
     }
 
-    private Cliente buscarClienteOrThrow(Long id) {
-        return clienteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado: [" + id + " ]"));
+    private ClienteResponseDTO toResponseDTO(Cliente cliente) {
+        return ClienteResponseDTO.builder().id(cliente.getId()).nombre(cliente.getNombre()).genero(cliente.getGenero()).edad(cliente.getEdad()).identificacion(cliente.getIdentificacion()).direccion(cliente.getDireccion()).telefono(cliente.getTelefono()).clienteId(cliente.getClienteId()).estado(cliente.getEstado()).build();
     }
 }
